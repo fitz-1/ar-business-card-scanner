@@ -23,3 +23,8 @@ pip install -r requirements.txt
 3. **Run Flask backend**
 ```bash
 python app.py
+
+4. **Frontend**
+```bash
+cd frontend
+python -m http.server 8000
