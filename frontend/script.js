@@ -157,6 +157,18 @@ document.addEventListener("DOMContentLoaded", () => {
         openResume();
     });
 
+    // Add this inside your DOMContentLoaded event
+    document.querySelector('#instaImage').addEventListener('click', function(evt) {
+        evt.preventDefault();
+        openInsta();
+    });
+
+    // Add this inside your DOMContentLoaded event
+    document.querySelector('#bikeImg').addEventListener('click', function(evt) {
+        evt.preventDefault();
+        openLinked();
+    });
+
 });
 
 // Add this function at the top level of your script
@@ -177,8 +189,8 @@ function speakWelcomeMessage(name) {
         const speech = new SpeechSynthesisUtterance();
         const messages = [
             `Hello! I am Fitz, welcome to my business card!`,
-            `Nice to meet you! I'm Fitz, and I'll be your virtual assistant today.`,
-            `Welcome! I'm your digital avatar, Fitz.`
+            `Nice to meet you! I'm Fitz, here is what I do!`,
+            `Welcome! I'm your digital avatar, Fitz. Take a look at my work!`
         ];
         
         speech.text = messages[Math.floor(Math.random() * messages.length)];
@@ -208,4 +220,16 @@ function openResume() {
     // Update this path to match your actual PDF resume location
     const resumePath = '../resources/resume/FITZ-RESUME.pdf';
     window.open(resumePath, '_blank');
+}
+// Add this function at the top level of your script
+function openInsta() {
+    // instagram path
+    const instaPath = 'https://www.instagram.com/fits._by_.fitz/';
+    window.open(instaPath, '_blank');
+}
+
+function openLinked() {
+    // instagram path
+    const linkedPath = 'https://www.linkedin.com/in/william-fitzgerald-cu-boulder/';
+    window.open(linkedPath, '_blank');
 }

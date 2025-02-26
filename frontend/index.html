@@ -50,15 +50,31 @@
         onclick="openResume()">
     </a-image>
     
-    <!-- Phone Icon -->
-    <a-box position="1 1.5 0" width="0.3" height="0.3" depth="0.3" color="#00FF00"
-        animation="property: rotation; to: 0 360 0; dur: 3000; loop: true">
-    </a-box>
+    <!-- Pants Icon -->
+    <a-image 
+        id="pantsImage"
+        class="clickable"
+        src="..\resources\first-pants.png"
+        position="1 1.5 0"
+        width="1"
+        height="1"
+        scale="1 1 1"
+        animation="property: position; to: 1 1.7 0; dir: alternate; dur: 1000; loop: true"
+        onclick="openInsta()">
+    </a-image>
     
-    <!-- Social Media Icon -->
-    <a-cylinder position="0 2 0" radius="0.2" height="0.3" color="#0000FF"
-        animation="property: scale; to: 1.2 1.2 1.2; dir: alternate; dur: 1000; loop: true">
-    </a-cylinder>
+    <!-- Bike Icon -->
+    <a-image 
+        id="bikeImg"
+        class="clickable"
+        src="..\resources\dirtJumper.webp"
+        position="0 2 0"
+        width="1"
+        height="1"
+        scale="1 1 1"
+        animation="property: position; to: 0 1.7 0; dir: alternate; dur: 1000; loop: true"
+        onclick="openLinked()">
+    </a-image>
     <!-- Add floating text -->
     <a-text value="Contact Info" position="-1 2.2 -3" color="#FFFFFF"></a-text>
 </a-entity>
