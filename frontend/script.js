@@ -27,6 +27,9 @@ document.addEventListener("DOMContentLoaded", () => {
         ).then(({ data: { text } }) => {
             console.log("📝 Extracted Text:", text);
 
+            // 🔠 Filter only alphabetic characters (A-Z, a-z)
+            text = text.replace(/[^a-zA-Z\s]/g, '');
+
             // ✅ Safely update ocrResult div if it exists
             const ocrResultDiv = document.getElementById('ocrResult');
             if (ocrResultDiv) {
@@ -35,13 +38,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.error("❌ 'ocrResult' div not found.");
             }
 
-            // 🎉 Show Avatar if text detected
-            if (text && text.trim().length > 5) { // Threshold check
-                const avatarBox = document.getElementById('avatarBox');
+            // 🎉 Show Avatar only if "Fitz" or "Fits" is detected
+            const avatarBox = document.getElementById('avatarBox');
+            if (/\b(Fitz|Fits)\b/i.test(text)) { // Case-insensitive match
                 avatarBox.setAttribute('visible', 'true'); // 👀 Show 3D object
-                console.log("✅ Business card detected. Avatar displayed.");
+                console.log("✅ Business card detected with 'Fitz' or 'Fits'. Avatar displayed.");
             } else {
-                console.log("❌ No significant text detected.");
+                avatarBox.setAttribute('visible', 'false'); // ❌ Hide avatar
+                console.log("❌ Required text not detected.");
             }
         }).catch((err) => {
             console.error("❌ OCR Error:", err);
