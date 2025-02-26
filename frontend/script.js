@@ -249,9 +249,9 @@ function speakSenaWelcomeMessage() {
     try {
         const speech = new SpeechSynthesisUtterance();
         const messages = [
-            `Hello! I am Sena, welcome to my business card!`,
-            `Nice to meet you! I'm Sena, here is what I do!`,
-            `Welcome! I'm your digital avatar, Sena. Take a look at my work!`
+            `Hello! I am Sehna, welcome to my business card!`,
+            `Nice to meet you! I'm Sehna, here is what I do!`,
+            `Welcome! I'm your digital avatar, Sehna. Take a look at my work!`
         ];
         
         speech.text = messages[Math.floor(Math.random() * messages.length)];
@@ -274,11 +274,11 @@ function openSenaResume() {
 }
 
 function openSenaProject() {
-    const projectPath = 'https://sena-project-url.com';
+    const projectPath = 'https://github.com/suctuk';
     window.open(projectPath, '_blank');
 }
 
 function openSenaPortfolio() {
-    const portfolioPath = 'https://sena-portfolio-url.com';
+    const portfolioPath = 'https://senas.me';
     window.open(portfolioPath, '_blank');
 }
