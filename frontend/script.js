@@ -37,16 +37,32 @@ document.addEventListener("DOMContentLoaded", () => {
             } else {
                 console.error("❌ 'ocrResult' div not found.");
             }
-            const model = document.getElementById('avatarEntity').components['gltf-model'];
+            const model = document.getElementById('fitzEntity').components['gltf-model'];
             console.log("Available animations:", model);
 
             // 🎉 Show Avatar only if "Fitz" or "Fits" is detected
-            const avatarEntity = document.getElementById('avatarEntity');
+            const fitzEntity = document.getElementById('fitzEntity');
+            const fitzInfo = document.getElementById('fitzIconContainer');
             if (/\b(Fitz|Fits)\b/i.test(text)) { // Case-insensitive match
-                avatarEntity.setAttribute('visible', 'true'); // 👀 Show 3D object
-                console.log("✅ Business card detected with 'Fitz' or 'Fits'. Avatar displayed.");
+                fitzEntity.setAttribute('visible', 'true'); // 👀 Show 3D object
+                fitzInfo.setAttribute('visible', 'true'); // 👀 Show 3D object
+                
+                // Call the speech function
+                speakWelcomeMessage();
+                
+                // Keep your existing animation code
+                fitzEntity.setAttribute('animation-mixer', {
+                    loop: 'repeat',
+                    repetitions: 5,
+                    timeScale: 1
+                });
+                console.log("Animation started");
+                updateFloatingText(text);
             } else {
-                avatarBox.setAttribute('visible', 'false'); // ❌ Hide avatar
+                fitzEntity.setAttribute('visible', 'false'); // ❌ Hide avatar
+                fitzInfo.setAttribute('visible', 'false'); // ❌ Hide avatar
+                // Stop animation
+                fitzEntity.removeAttribute('animation-mixer');
                 console.log("❌ Required text not detected.");
             }
         }).catch((err) => {
@@ -54,4 +70,62 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
+    // Add this after your document.addEventListener("DOMContentLoaded"...
+    fitzEntity.addEventListener('model-loaded', function(e) {
+        console.log('Model loaded!');
+        const mesh = fitzEntity.getObject3D('mesh');
+        if (mesh) {
+            // Log the entire mesh object to inspect its properties
+            console.log('Mesh:', mesh);
+            if (mesh.animations) {
+                console.log('Animations found:', mesh.animations.length);
+                mesh.animations.forEach((anim, index) => {
+                    console.log(`Animation ${index}:`, anim.name);
+                });
+            } else {
+                console.warn('No animations found in the model');
+            }
+        }
+    });
+
+    // Add this after model loading
+    fitzEntity.addEventListener('animation-loop', function() {
+        console.log('Animation completed a loop');
+    });
+
+    fitzEntity.addEventListener('animation-finished', function() {
+        console.log('Animation finished');
+    });
+
+    // Add error handling
+    fitzEntity.addEventListener('model-error', function(e) {
+        console.error('Error loading model:', e);
+    });
+
+    // Add this near your other event listeners
+    window.speechSynthesis.addEventListener('error', function(event) {
+        console.error('Speech synthesis error:', event);
+    });
+
 });
+
+// Add this function at the top level of your script
+function speakWelcomeMessage(name) {
+    // Create speech synthesis instance
+    const speech = new SpeechSynthesisUtterance();
+    const messages = [
+        `Hello! I am Fitz, welcome to my business card!`,
+        `Nice to meet you! I'm Fitz, and I'll be your virtual assistant today.`,
+        `Welcome! I'm your digital avatar, Fitz.`
+    ];
+    
+    speech.text = messages[Math.floor(Math.random() * messages.length)];
+    speech.rate = 1;
+    speech.pitch = 1;
+    speech.volume = 1;
+    
+    // Stop any existing speech
+    window.speechSynthesis.cancel();
+    // Speak the new message
+    window.speechSynthesis.speak(speech);
+}
