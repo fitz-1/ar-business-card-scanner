@@ -66,6 +66,19 @@ document.addEventListener("DOMContentLoaded", () => {
                 fitzEntity.setAttribute('visible', 'true'); // 👀 Show 3D object
                 fitzInfo.setAttribute('visible', 'true'); // 👀 Show 3D object
                 
+                // Make sure resume is visible
+                const resumeImage = document.querySelector('#resumeImage');
+                if (resumeImage) {
+                    resumeImage.setAttribute('visible', 'true');
+                    // Add a nice fade-in effect
+                    resumeImage.setAttribute('animation__fade', {
+                        property: 'opacity',
+                        from: 0,
+                        to: 1,
+                        dur: 1000
+                    });
+                }
+                
                 // Call the speech function
                 speakWelcomeMessage();
                 
@@ -80,6 +93,12 @@ document.addEventListener("DOMContentLoaded", () => {
             } else {
                 fitzEntity.setAttribute('visible', 'false'); // ❌ Hide avatar
                 fitzInfo.setAttribute('visible', 'false'); // ❌ Hide avatar
+                
+                // Hide resume
+                const resumeImage = document.querySelector('#resumeImage');
+                if (resumeImage) {
+                    resumeImage.setAttribute('visible', 'false');
+                }
                 // Stop animation
                 fitzEntity.removeAttribute('animation-mixer');
                 console.log("❌ Required text not detected.");
@@ -132,6 +151,12 @@ document.addEventListener("DOMContentLoaded", () => {
         speakWelcomeMessage();
     });
 
+    // Add this inside your DOMContentLoaded event
+    document.querySelector('#resumeImage').addEventListener('click', function(evt) {
+        evt.preventDefault();
+        openResume();
+    });
+
 });
 
 // Add this function at the top level of your script
@@ -176,4 +201,11 @@ function speakWelcomeMessage(name) {
     } catch (error) {
         console.error("❌ Speech synthesis error:", error);
     }
+}
+
+// Add this function at the top level of your script
+function openResume() {
+    // Update this path to match your actual PDF resume location
+    const resumePath = '../resources/resume/FITZ-RESUME.pdf';
+    window.open(resumePath, '_blank');
 }

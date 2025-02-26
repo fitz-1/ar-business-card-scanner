@@ -37,10 +37,18 @@
 
 <!-- Add floating icons -->
 <a-entity id="fitzIconContainer" position="0 0 -3" visible="false">
-    <!-- Email Icon -->
-    <a-sphere position="-1 1.5 0" radius="0.2" color="#FF0000"
-        animation="property: position; to: -1 1.7 0; dir: alternate; dur: 1000; loop: true">
-    </a-sphere>
+    <!-- Replace the sphere with the resume -->
+    <a-image 
+        id="resumeImage"
+        class="clickable"
+        src="..\resources\resume\FitzResumePhoto.png"
+        position="-1 1.5 0"
+        width="1"
+        height="1.4"
+        scale="0.5 0.5 0.5"
+        animation="property: position; to: -1 1.7 0; dir: alternate; dur: 1000; loop: true"
+        onclick="openResume()">
+    </a-image>
     
     <!-- Phone Icon -->
     <a-box position="1 1.5 0" width="0.3" height="0.3" depth="0.3" color="#00FF00"
