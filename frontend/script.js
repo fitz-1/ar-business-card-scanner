@@ -1,3 +1,22 @@
+// Add this before your DOMContentLoaded event
+function updateFloatingText(text) {
+    console.log("Updating floating text with:", text);
+    const scene = document.querySelector('a-scene');
+    
+    // Remove any existing floating text
+    const oldTexts = document.querySelectorAll('.floating-text');
+    oldTexts.forEach(text => text.parentNode.removeChild(text));
+    
+    // Add new text
+    const textEntity = document.createElement('a-text');
+    textEntity.setAttribute('class', 'floating-text');
+    textEntity.setAttribute('value', text);
+    textEntity.setAttribute('position', '0 2.5 -3');
+    textEntity.setAttribute('color', '#FFFFFF');
+    textEntity.setAttribute('align', 'center');
+    scene.appendChild(textEntity);
+}
+
 // ✅ Ensure DOM is loaded before running the script
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -107,25 +126,54 @@ document.addEventListener("DOMContentLoaded", () => {
         console.error('Speech synthesis error:', event);
     });
 
+    // Add inside your DOMContentLoaded event
+    document.getElementById('testSpeech')?.addEventListener('click', () => {
+        console.log("Testing speech synthesis...");
+        speakWelcomeMessage();
+    });
+
 });
 
 // Add this function at the top level of your script
 function speakWelcomeMessage(name) {
-    // Create speech synthesis instance
-    const speech = new SpeechSynthesisUtterance();
-    const messages = [
-        `Hello! I am Fitz, welcome to my business card!`,
-        `Nice to meet you! I'm Fitz, and I'll be your virtual assistant today.`,
-        `Welcome! I'm your digital avatar, Fitz.`
-    ];
-    
-    speech.text = messages[Math.floor(Math.random() * messages.length)];
-    speech.rate = 1;
-    speech.pitch = 1;
-    speech.volume = 1;
-    
-    // Stop any existing speech
-    window.speechSynthesis.cancel();
-    // Speak the new message
-    window.speechSynthesis.speak(speech);
+    // Check if speech synthesis is supported
+    if (!('speechSynthesis' in window)) {
+        console.error("❌ Speech synthesis not supported");
+        return;
+    }
+
+    // Request permission if needed (Chrome requirement)
+    if (document.visibilityState !== 'visible') {
+        console.warn("⚠️ Page must be visible to use speech synthesis");
+        return;
+    }
+
+    try {
+        const speech = new SpeechSynthesisUtterance();
+        const messages = [
+            `Hello! I am Fitz, welcome to my business card!`,
+            `Nice to meet you! I'm Fitz, and I'll be your virtual assistant today.`,
+            `Welcome! I'm your digital avatar, Fitz.`
+        ];
+        
+        speech.text = messages[Math.floor(Math.random() * messages.length)];
+        speech.rate = 1;
+        speech.pitch = 1;
+        speech.volume = 1;
+        speech.lang = 'en-US';  // Explicitly set language
+
+        // Add event listeners for debugging
+        speech.onstart = () => console.log("🗣️ Speech started");
+        speech.onend = () => console.log("✅ Speech ended");
+        speech.onerror = (event) => console.error("❌ Speech error:", event);
+        
+        // Stop any existing speech
+        window.speechSynthesis.cancel();
+        
+        // Speak the new message
+        window.speechSynthesis.speak(speech);
+        
+    } catch (error) {
+        console.error("❌ Speech synthesis error:", error);
+    }
 }
