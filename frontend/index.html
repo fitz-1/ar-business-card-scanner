@@ -78,6 +78,58 @@
     <a-text value="Contact Info" position="-1 2.2 -3" color="#FFFFFF"></a-text>
 </a-entity>
 
+<!-- Sena's 3D Avatar -->
+<a-entity 
+    id="senaEntity" 
+    gltf-model="url(../resources/sena.glb)"
+    position="0 0 -3" 
+    scale="1 1 1" 
+    animation-mixer
+    visible="false">
+</a-entity>
+
+<!-- Sena's Floating Icons Container -->
+<a-entity id="senaIconContainer" position="0 0 -3" visible="false">
+    <!-- Sena's Resume -->
+    <a-image 
+        id="senaResumeImage"
+        class="clickable"
+        src="..\resources\resume\SenaResumePhoto.png"
+        position="-1 1.5 0"
+        width="1"
+        height="1.4"
+        scale="0.5 0.5 0.5"
+        animation="property: position; to: -1 1.7 0; dir: alternate; dur: 1000; loop: true"
+        onclick="openSenaResume()">
+    </a-image>
+    
+    <!-- Sena's Project Icon -->
+    <a-image 
+        id="senaProjectImage"
+        class="clickable"
+        src="..\resources\sena-project.png"
+        position="1 1.5 0"
+        width="1"
+        height="1"
+        scale="1 1 1"
+        animation="property: position; to: 1 1.7 0; dir: alternate; dur: 1000; loop: true"
+        onclick="openSenaProject()">
+    </a-image>
+    
+    <!-- Sena's Portfolio Icon -->
+    <a-image 
+        id="senaPortfolioImg"
+        class="clickable"
+        src="..\resources\sena-portfolio.png"
+        position="0 2 0"
+        width="1"
+        height="1"
+        scale="1 1 1"
+        animation="property: position; to: 0 2.2 0; dir: alternate; dur: 1000; loop: true"
+        onclick="openSenaPortfolio()">
+    </a-image>
+</a-entity>
+
 </a-scene>
 <div id="ocrResult"><strong>Extracted Text:</strong></div>
     <script src="script.js"></script>

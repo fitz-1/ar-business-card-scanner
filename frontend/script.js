@@ -40,68 +40,44 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // 🟢 Perform OCR using Tesseract.js
         Tesseract.recognize(
-            canvas,            // Source image
-            'eng',             // Language
-            { logger: m => console.log(m) } // OCR Progress
+            canvas,
+            'eng',
+            { logger: m => console.log(m) }
         ).then(({ data: { text } }) => {
             console.log("📝 Extracted Text:", text);
-
-            // 🔠 Filter only alphabetic characters (A-Z, a-z)
             text = text.replace(/[^a-zA-Z\s]/g, '');
 
-            // ✅ Safely update ocrResult div if it exists
-            const ocrResultDiv = document.getElementById('ocrResult');
-            if (ocrResultDiv) {
-                ocrResultDiv.innerHTML = `<strong>Extracted Text:</strong><br>${text}`;
-            } else {
-                console.error("❌ 'ocrResult' div not found.");
-            }
-            const model = document.getElementById('fitzEntity').components['gltf-model'];
-            console.log("Available animations:", model);
-
-            // 🎉 Show Avatar only if "Fitz" or "Fits" is detected
             const fitzEntity = document.getElementById('fitzEntity');
             const fitzInfo = document.getElementById('fitzIconContainer');
-            if (/\b(Fitz|Fits)\b/i.test(text)) { // Case-insensitive match
-                fitzEntity.setAttribute('visible', 'true'); // 👀 Show 3D object
-                fitzInfo.setAttribute('visible', 'true'); // 👀 Show 3D object
-                
-                // Make sure resume is visible
-                const resumeImage = document.querySelector('#resumeImage');
-                if (resumeImage) {
-                    resumeImage.setAttribute('visible', 'true');
-                    // Add a nice fade-in effect
-                    resumeImage.setAttribute('animation__fade', {
-                        property: 'opacity',
-                        from: 0,
-                        to: 1,
-                        dur: 1000
-                    });
-                }
-                
-                // Call the speech function
+            const senaEntity = document.getElementById('senaEntity');
+            const senaInfo = document.getElementById('senaIconContainer');
+
+            // Hide all entities first
+            fitzEntity.setAttribute('visible', 'false');
+            fitzInfo.setAttribute('visible', 'false');
+            senaEntity.setAttribute('visible', 'false');
+            senaInfo.setAttribute('visible', 'false');
+
+            if (/\b(Fitz|Fits)\b/i.test(text)) {
+                // Existing Fitz logic
+                fitzEntity.setAttribute('visible', 'true');
+                fitzInfo.setAttribute('visible', 'true');
                 speakWelcomeMessage();
-                
-                // Keep your existing animation code
                 fitzEntity.setAttribute('animation-mixer', {
                     loop: 'repeat',
                     repetitions: 5,
                     timeScale: 1
                 });
-                console.log("Animation started");
-                //updateFloatingText(text);
-            } else {
-                fitzEntity.setAttribute('visible', 'false'); // ❌ Hide avatar
-                fitzInfo.setAttribute('visible', 'false'); // ❌ Hide avatar
-                
-                // Hide resume
-                const resumeImage = document.querySelector('#resumeImage');
-                if (resumeImage) {
-                    resumeImage.setAttribute('visible', 'false');
-                }
-                // Stop animation
-                fitzEntity.removeAttribute('animation-mixer');
-                console.log("❌ Required text not detected.");
+            } else if (/\b(Sena)\b/i.test(text)) {
+                // Sena logic
+                senaEntity.setAttribute('visible', 'true');
+                senaInfo.setAttribute('visible', 'true');
+                speakSenaWelcomeMessage();
+                senaEntity.setAttribute('animation-mixer', {
+                    loop: 'repeat',
+                    repetitions: 5,
+                    timeScale: 1
+                });
             }
         }).catch((err) => {
             console.error("❌ OCR Error:", err);
@@ -169,6 +145,35 @@ document.addEventListener("DOMContentLoaded", () => {
         openLinked();
     });
 
+    // Add inside your DOMContentLoaded event
+    const senaEntity = document.getElementById('senaEntity');
+    senaEntity.addEventListener('model-loaded', function(e) {
+        console.log('Sena Model loaded!');
+        const mesh = senaEntity.getObject3D('mesh');
+        if (mesh && mesh.animations) {
+            console.log('Sena Animations found:', mesh.animations.length);
+            mesh.animations.forEach((anim, index) => {
+                console.log(`Sena Animation ${index}:`, anim.name);
+            });
+        }
+    });
+
+    // Add click listeners for Sena's icons
+    document.querySelector('#senaResumeImage').addEventListener('click', function(evt) {
+        evt.preventDefault();
+        openSenaResume();
+    });
+
+    document.querySelector('#senaProjectImage').addEventListener('click', function(evt) {
+        evt.preventDefault();
+        openSenaProject();
+    });
+
+    document.querySelector('#senaPortfolioImg').addEventListener('click', function(evt) {
+        evt.preventDefault();
+        openSenaPortfolio();
+    });
+
 });
 
 // Add this function at the top level of your script
@@ -232,4 +237,48 @@ function openLinked() {
     // instagram path
     const linkedPath = 'https://www.linkedin.com/in/william-fitzgerald-cu-boulder/';
     window.open(linkedPath, '_blank');
+}
+
+// Add these functions at the top level of your script
+function speakSenaWelcomeMessage() {
+    if (!('speechSynthesis' in window)) {
+        console.error("❌ Speech synthesis not supported");
+        return;
+    }
+
+    try {
+        const speech = new SpeechSynthesisUtterance();
+        const messages = [
+            `Hello! I am Sena, welcome to my business card!`,
+            `Nice to meet you! I'm Sena, here is what I do!`,
+            `Welcome! I'm your digital avatar, Sena. Take a look at my work!`
+        ];
+        
+        speech.text = messages[Math.floor(Math.random() * messages.length)];
+        speech.rate = 1;
+        speech.pitch = 1;
+        speech.volume = 1;
+        speech.lang = 'en-US';
+
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(speech);
+        
+    } catch (error) {
+        console.error("❌ Speech synthesis error:", error);
+    }
+}
+
+function openSenaResume() {
+    const resumePath = '../resources/resume/SENA-RESUME.pdf';
+    window.open(resumePath, '_blank');
+}
+
+function openSenaProject() {
+    const projectPath = 'https://sena-project-url.com';
+    window.open(projectPath, '_blank');
+}
+
+function openSenaPortfolio() {
+    const portfolioPath = 'https://sena-portfolio-url.com';
+    window.open(portfolioPath, '_blank');
 }
