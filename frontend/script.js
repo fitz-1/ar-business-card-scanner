@@ -37,11 +37,13 @@ document.addEventListener("DOMContentLoaded", () => {
             } else {
                 console.error("❌ 'ocrResult' div not found.");
             }
+            const model = document.getElementById('avatarEntity').components['gltf-model'];
+            console.log("Available animations:", model);
 
             // 🎉 Show Avatar only if "Fitz" or "Fits" is detected
-            const avatarBox = document.getElementById('avatarBox');
+            const avatarEntity = document.getElementById('avatarEntity');
             if (/\b(Fitz|Fits)\b/i.test(text)) { // Case-insensitive match
-                avatarBox.setAttribute('visible', 'true'); // 👀 Show 3D object
+                avatarEntity.setAttribute('visible', 'true'); // 👀 Show 3D object
                 console.log("✅ Business card detected with 'Fitz' or 'Fits'. Avatar displayed.");
             } else {
                 avatarBox.setAttribute('visible', 'false'); // ❌ Hide avatar
