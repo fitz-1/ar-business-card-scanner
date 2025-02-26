@@ -1,5 +1,6 @@
 body { text-align: center; font-family: Arial, sans-serif; }
-video, canvas { border: 2px solid #ccc; margin: 10px; }
+video { border: 2px solid #ccc; margin: 10px; }
+canvas{margin: 10px;}
 button { padding: 10px 20px; font-size: 16px; }
 
 a-scene {
@@ -20,7 +21,6 @@ a-scene {
     background-color: #4CAF50;
     color: white;
     border: none;
-    border-radius: 5px;
     cursor: pointer;
 }
 

@@ -1,21 +1,21 @@
-// Add this before your DOMContentLoaded event
-function updateFloatingText(text) {
-    console.log("Updating floating text with:", text);
-    const scene = document.querySelector('a-scene');
+// // Add this before your DOMContentLoaded event
+// function updateFloatingText(text) {
+//     console.log("Updating floating text with:", text);
+//     const scene = document.querySelector('a-scene');
     
-    // Remove any existing floating text
-    const oldTexts = document.querySelectorAll('.floating-text');
-    oldTexts.forEach(text => text.parentNode.removeChild(text));
+//     // Remove any existing floating text
+//     const oldTexts = document.querySelectorAll('.floating-text');
+//     oldTexts.forEach(text => text.parentNode.removeChild(text));
     
-    // Add new text
-    const textEntity = document.createElement('a-text');
-    textEntity.setAttribute('class', 'floating-text');
-    textEntity.setAttribute('value', text);
-    textEntity.setAttribute('position', '0 2.5 -3');
-    textEntity.setAttribute('color', '#FFFFFF');
-    textEntity.setAttribute('align', 'center');
-    scene.appendChild(textEntity);
-}
+//     // Add new text
+//     const textEntity = document.createElement('a-text');
+//     textEntity.setAttribute('class', 'floating-text');
+//     textEntity.setAttribute('value', text);
+//     textEntity.setAttribute('position', '0 2.5 -3');
+//     textEntity.setAttribute('color', '#FFFFFF');
+//     textEntity.setAttribute('align', 'center');
+//     scene.appendChild(textEntity);
+// }
 
 // ✅ Ensure DOM is loaded before running the script
 document.addEventListener("DOMContentLoaded", () => {
@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     timeScale: 1
                 });
                 console.log("Animation started");
-                updateFloatingText(text);
+                //updateFloatingText(text);
             } else {
                 fitzEntity.setAttribute('visible', 'false'); // ❌ Hide avatar
                 fitzInfo.setAttribute('visible', 'false'); // ❌ Hide avatar
