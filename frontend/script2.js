@@ -2,12 +2,12 @@
 const URLS = {
     fitz: {
         resume: '../resources/resume/FITZ-RESUME.pdf',
-        portfolio: 'https://fitzs-portfolio-url.com',
-        project: 'https://github.com/fitzs-project'
+        portfolio: 'https://www.linkedin.com/in/william-fitzgerald-cu-boulder/',
+        project: 'https://www.instagram.com/fits._by_.fitz/'
     },
     sena: {
         resume: '../resources/resume/SENA-RESUME.pdf',
-        portfolio: 'https://www.linkedin.com/in/sena-tuk/',
+        portfolio: 'https://senas.me',
         project: 'https://github.com/suctuk/'
     }
 };
@@ -16,6 +16,12 @@ const URLS = {
 function handleSenaClicks(type) {
     console.log(`Opening Sena's ${type}:`, URLS.sena[type]);
     window.open(URLS.sena[type], '_blank');
+}
+
+// Handle clicks for Fitz's content
+function handleFitzClicks(type) {
+    console.log(`Opening Fitz's ${type}:`, URLS.fitz[type]);
+    window.open(URLS.fitz[type], '_blank');
 }
 
 // ✅ Ensure DOM is loaded before running the script
@@ -86,6 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Add this after your document.addEventListener("DOMContentLoaded"...
+    const fitzEntity = document.getElementById('fitzEntity');
     fitzEntity.addEventListener('model-loaded', function(e) {
         console.log('Model loaded!');
         const mesh = fitzEntity.getObject3D('mesh');
@@ -128,24 +135,24 @@ document.addEventListener("DOMContentLoaded", () => {
         speakWelcomeMessage();
     });
 
-    // Add this inside your DOMContentLoaded event
-    document.querySelector('#resumeImage').addEventListener('click', function(evt) {
+    // FITZ CLICK HANDLERS
+    // Set up handlers for Fitz's content
+    document.querySelector('#resumeImage')?.addEventListener('click', function(evt) {
         evt.preventDefault();
-        openResume();
+        handleFitzClicks('resume');
     });
 
-    // Add this inside your DOMContentLoaded event
-    document.querySelector('#instaImage').addEventListener('click', function(evt) {
+    document.querySelector('#pantsImage')?.addEventListener('click', function(evt) {
         evt.preventDefault();
-        openInsta();
+        handleFitzClicks('project');
     });
 
-    // Add this inside your DOMContentLoaded event
-    document.querySelector('#bikeImg').addEventListener('click', function(evt) {
+    document.querySelector('#bikeImg')?.addEventListener('click', function(evt) {
         evt.preventDefault();
-        openLinked();
+        handleFitzClicks('portfolio');
     });
 
+    // SENA MODEL LOADING
     // Add inside your DOMContentLoaded event
     const senaEntity = document.getElementById('senaEntity');
     senaEntity.addEventListener('model-loaded', function(e) {
@@ -159,47 +166,29 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Add click listeners for Sena's icons
+    // SENA CLICK HANDLERS
+    // Set up click handlers for Sena's content
     document.querySelector('#senaResumeImage')?.addEventListener('click', (evt) => {
         evt.preventDefault();
         console.log('Sena Resume clicked'); // Debug log
-        openSenaResume();
+        handleSenaClicks('resume');
     });
 
     document.querySelector('#senaProjectImage')?.addEventListener('click', (evt) => {
         evt.preventDefault();
         console.log('Sena Project clicked'); // Debug log
-        openSenaProject();
+        handleSenaClicks('project');
     });
 
     document.querySelector('#senaPortfolioImg')?.addEventListener('click', (evt) => {
         evt.preventDefault();
         console.log('Sena Portfolio clicked'); // Debug log
-        openSenaPortfolio();
+        handleSenaClicks('portfolio');
     });
-
-    // Add click handlers for Sena's content
-    const senaClickHandlers = {
-        'senaResumeImage': () => handleSenaClicks('resume'),
-        'senaProjectImage': () => handleSenaClicks('project'),
-        'senaPortfolioImg': () => handleSenaClicks('portfolio')
-    };
-
-    // Attach click handlers after DOM is loaded
-    Object.entries(senaClickHandlers).forEach(([id, handler]) => {
-        const element = document.getElementById(id);
-        if (element) {
-            element.addEventListener('click', (evt) => {
-                evt.preventDefault();
-                handler();
-            });
-        }
-    });
-
 });
 
 // Add this function at the top level of your script
-function speakWelcomeMessage(name) {
+function speakWelcomeMessage() {
     // Check if speech synthesis is supported
     if (!('speechSynthesis' in window)) {
         console.error("❌ Speech synthesis not supported");
@@ -243,25 +232,6 @@ function speakWelcomeMessage(name) {
 }
 
 // Add this function at the top level of your script
-function openResume() {
-    // Update this path to match your actual PDF resume location
-    const resumePath = '../resources/resume/FITZ-RESUME.pdf';
-    window.open(resumePath, '_blank');
-}
-// Add this function at the top level of your script
-function openInsta() {
-    // instagram path
-    const instaPath = 'https://www.instagram.com/fits._by_.fitz/';
-    window.open(instaPath, '_blank');
-}
-
-function openLinked() {
-    // instagram path
-    const linkedPath = 'https://www.linkedin.com/in/william-fitzgerald-cu-boulder/';
-    window.open(linkedPath, '_blank');
-}
-
-// Add these functions at the top level of your script
 function speakSenaWelcomeMessage() {
     if (!('speechSynthesis' in window)) {
         console.error("❌ Speech synthesis not supported");
@@ -290,20 +260,6 @@ function speakSenaWelcomeMessage() {
     }
 }
 
-function openSenaResume() {
-    const senaResumePath = '../resources/resume/SENA-RESUME.pdf'; // Make sure this matches your actual file name
-    window.open(senaResumePath, '_blank');
-    console.log("Opening Sena's Resume:", senaResumePath);
-}
-
-function openSenaProject() {
-    const senaProjectURL = 'https://github.com/suctuk/';
-    window.open(senaProjectURL, '_blank');
-    console.log("Opening Sena's Project:", senaProjectURL);
-}
-
-function openSenaPortfolio() {
-    const senaPortfolioURL = 'https://senas.me'; // Replace with Sena's actual LinkedIn
-    window.open(senaPortfolioURL, '_blank');
-    console.log("Opening Sena's Portfolio:", senaPortfolioURL);
-}
+// REMOVE THESE REDUNDANT FUNCTIONS - They're replaced by handleSenaClicks and handleFitzClicks
+// These older functions are no longer needed and are causing the issues:
+// openResume, openInsta, openLinked, openSenaResume, openSenaProject, openSenaPortfolio
