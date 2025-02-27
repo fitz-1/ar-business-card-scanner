@@ -45,8 +45,9 @@ document.addEventListener("DOMContentLoaded", () => {
             'eng',
             { logger: m => console.log(m) }
         ).then(({ data: { text } }) => {
-            console.log("📝 Extracted Text:", text);
-            text = text.replace(/[^a-zA-Z\s]/g, '');
+            // Only keep letters and spaces, remove all other characters including numbers
+            const cleanedText = text.replace(/[^a-zA-Z\s]/g, '');
+            console.log("📝 Extracted Text:", cleanedText);
 
             const fitzEntity = document.getElementById('fitzEntity');
             const fitzInfo = document.getElementById('fitzIconContainer');
@@ -59,7 +60,8 @@ document.addEventListener("DOMContentLoaded", () => {
             senaEntity.setAttribute('visible', 'false');
             senaInfo.setAttribute('visible', 'false');
 
-            if (/\b(Fitz|Fits)\b/i.test(text)) {
+            // Use cleanedText instead of text in your conditions
+            if (/\b(Fitz|Fits|Flts|Fltz)\b/i.test(cleanedText)) {
                 // Existing Fitz logic
                 fitzEntity.setAttribute('visible', 'true');
                 fitzInfo.setAttribute('visible', 'true');
@@ -69,7 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     repetitions: 5,
                     timeScale: 1
                 });
-            } else if (/\b(Sena)\b/i.test(text)) {
+            } else if (/\b(Sena|Uctuk)\b/i.test(cleanedText)) {
                 // Sena logic
                 senaEntity.setAttribute('visible', 'true');
                 senaInfo.setAttribute('visible', 'true');
