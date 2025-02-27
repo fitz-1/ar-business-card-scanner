@@ -1,21 +1,22 @@
-// // Add this before your DOMContentLoaded event
-// function updateFloatingText(text) {
-//     console.log("Updating floating text with:", text);
-//     const scene = document.querySelector('a-scene');
-    
-//     // Remove any existing floating text
-//     const oldTexts = document.querySelectorAll('.floating-text');
-//     oldTexts.forEach(text => text.parentNode.removeChild(text));
-    
-//     // Add new text
-//     const textEntity = document.createElement('a-text');
-//     textEntity.setAttribute('class', 'floating-text');
-//     textEntity.setAttribute('value', text);
-//     textEntity.setAttribute('position', '0 2.5 -3');
-//     textEntity.setAttribute('color', '#FFFFFF');
-//     textEntity.setAttribute('align', 'center');
-//     scene.appendChild(textEntity);
-// }
+// Define URLs at the top level
+const URLS = {
+    fitz: {
+        resume: '../resources/resume/FITZ-RESUME.pdf',
+        portfolio: 'https://fitzs-portfolio-url.com',
+        project: 'https://github.com/fitzs-project'
+    },
+    sena: {
+        resume: '../resources/resume/SENA-RESUME.pdf',
+        portfolio: 'https://www.linkedin.com/in/sena-tuk/',
+        project: 'https://github.com/suctuk/'
+    }
+};
+
+// Handle clicks for Sena's content
+function handleSenaClicks(type) {
+    console.log(`Opening Sena's ${type}:`, URLS.sena[type]);
+    window.open(URLS.sena[type], '_blank');
+}
 
 // ✅ Ensure DOM is loaded before running the script
 document.addEventListener("DOMContentLoaded", () => {
@@ -159,19 +160,40 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Add click listeners for Sena's icons
-    document.querySelector('#senaResumeImage').addEventListener('click', function(evt) {
+    document.querySelector('#senaResumeImage')?.addEventListener('click', (evt) => {
         evt.preventDefault();
+        console.log('Sena Resume clicked'); // Debug log
         openSenaResume();
     });
 
-    document.querySelector('#senaProjectImage').addEventListener('click', function(evt) {
+    document.querySelector('#senaProjectImage')?.addEventListener('click', (evt) => {
         evt.preventDefault();
+        console.log('Sena Project clicked'); // Debug log
         openSenaProject();
     });
 
-    document.querySelector('#senaPortfolioImg').addEventListener('click', function(evt) {
+    document.querySelector('#senaPortfolioImg')?.addEventListener('click', (evt) => {
         evt.preventDefault();
+        console.log('Sena Portfolio clicked'); // Debug log
         openSenaPortfolio();
+    });
+
+    // Add click handlers for Sena's content
+    const senaClickHandlers = {
+        'senaResumeImage': () => handleSenaClicks('resume'),
+        'senaProjectImage': () => handleSenaClicks('project'),
+        'senaPortfolioImg': () => handleSenaClicks('portfolio')
+    };
+
+    // Attach click handlers after DOM is loaded
+    Object.entries(senaClickHandlers).forEach(([id, handler]) => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.addEventListener('click', (evt) => {
+                evt.preventDefault();
+                handler();
+            });
+        }
     });
 
 });
@@ -269,16 +291,19 @@ function speakSenaWelcomeMessage() {
 }
 
 function openSenaResume() {
-    const resumePath = '../resources/resume/SENA-RESUME.pdf';
-    window.open(resumePath, '_blank');
+    const senaResumePath = '../resources/resume/SENA-RESUME.pdf'; // Make sure this matches your actual file name
+    window.open(senaResumePath, '_blank');
+    console.log("Opening Sena's Resume:", senaResumePath);
 }
 
 function openSenaProject() {
-    const projectPath = 'https://github.com/suctuk';
-    window.open(projectPath, '_blank');
+    const senaProjectURL = 'https://github.com/suctuk/';
+    window.open(senaProjectURL, '_blank');
+    console.log("Opening Sena's Project:", senaProjectURL);
 }
 
 function openSenaPortfolio() {
-    const portfolioPath = 'https://senas.me';
-    window.open(portfolioPath, '_blank');
+    const senaPortfolioURL = 'https://www.linkedin.com/in/sena-tuk/'; // Replace with Sena's actual LinkedIn
+    window.open(senaPortfolioURL, '_blank');
+    console.log("Opening Sena's Portfolio:", senaPortfolioURL);
 }
